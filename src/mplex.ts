@@ -50,7 +50,7 @@ export interface MplexStream extends Stream {
 interface MplexStreamMuxerInit extends MplexInit, StreamMuxerInit {}
 
 export class MplexStreamMuxer implements StreamMuxer {
-  public protocol = '/mplex/6.7.0'
+  public protocol = '/mplex/snappy/0.1.0'
 
   public sink: Sink<Uint8Array>
   public source: AsyncIterable<Uint8Array>

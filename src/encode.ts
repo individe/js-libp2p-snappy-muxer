@@ -2,6 +2,8 @@ import type { Source } from 'it-stream-types'
 import varint from 'varint'
 import { allocUnsafe } from './alloc-unsafe.js'
 import { Message, MessageTypes } from './message-types.js'
+import snappy from 'snappyjs'
+import { Uint8ArrayList } from 'uint8arraylist'
 
 const POOL_SIZE = 10 * 1024
 
@@ -9,7 +11,7 @@ class Encoder {
   private _pool: Uint8Array
   private _poolOffset: number
 
-  constructor () {
+  constructor() {
     this._pool = allocUnsafe(POOL_SIZE)
     this._poolOffset = 0
   }
@@ -17,7 +19,7 @@ class Encoder {
   /**
    * Encodes the given message and returns it and its header
    */
-  write (msg: Message): Uint8Array[] {
+  write(msg: Message): Uint8Array[] {
     const pool = this._pool
     let offset = this._poolOffset
 
@@ -25,6 +27,11 @@ class Encoder {
     offset += varint.encode.bytes
 
     if ((msg.type === MessageTypes.NEW_STREAM || msg.type === MessageTypes.MESSAGE_INITIATOR || msg.type === MessageTypes.MESSAGE_RECEIVER) && msg.data != null) {
+      const compressed = snappy.compress(msg.data.subarray())
+
+      msg.data = new Uint8ArrayList()
+      msg.data.append(compressed)
+
       varint.encode(msg.data.length, pool, offset)
     } else {
       varint.encode(0, pool, offset)
@@ -59,14 +66,14 @@ const encoder = new Encoder()
 /**
  * Encode and yield one or more messages
  */
-export async function * encode (source: Source<Message | Message[]>) {
+export async function* encode(source: Source<Message | Message[]>) {
   for await (const msg of source) {
     if (Array.isArray(msg)) {
       for (const m of msg) {
-        yield * encoder.write(m)
+        yield* encoder.write(m)
       }
     } else {
-      yield * encoder.write(msg)
+      yield* encoder.write(msg)
     }
   }
 }

@@ -5,6 +5,8 @@
   },
   "include": [
     "src",
-    "test"
-  ]
+    "test",
+    "declarations.d.ts"
+  ],
+  "exclude": ["node_modules"]
 }

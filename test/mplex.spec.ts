@@ -77,7 +77,7 @@ describe('mplex', () => {
     await muxer.sink(stream)
 
     const messages = await all(decode(bufs))
-
+    
     expect(messages).to.have.nested.property('[0][0].id', 11, 'Did not specify the correct stream id')
     expect(messages).to.have.nested.property('[0][0].type', MessageTypes.RESET_RECEIVER, 'Did not reset the stream that tipped us over the inbound stream limit')
   })

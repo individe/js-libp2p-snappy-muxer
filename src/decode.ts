@@ -2,6 +2,7 @@ import { MessageTypeNames, MessageTypes } from './message-types.js'
 import { Uint8ArrayList } from 'uint8arraylist'
 import type { Source } from 'it-stream-types'
 import type { Message } from './message-types.js'
+import snappy from 'snappyjs'
 
 interface MessageHeader {
   id: number
@@ -14,12 +15,12 @@ class Decoder {
   private readonly _buffer: Uint8ArrayList
   private _headerInfo: MessageHeader | null
 
-  constructor () {
+  constructor() {
     this._buffer = new Uint8ArrayList()
     this._headerInfo = null
   }
 
-  write (chunk: Uint8Array) {
+  write(chunk: Uint8Array) {
     if (chunk == null || chunk.length === 0) {
       return []
     }
@@ -49,7 +50,10 @@ class Decoder {
       }
 
       if (type === MessageTypes.NEW_STREAM || type === MessageTypes.MESSAGE_INITIATOR || type === MessageTypes.MESSAGE_RECEIVER) {
-        msg.data = this._buffer.sublist(offset, offset + length)
+        const uncompressed = snappy.uncompress(this._buffer.sublist(offset, offset + length).subarray())
+
+        msg.data = new Uint8ArrayList()
+        msg.data.append(uncompressed)
       }
 
       msgs.push(msg)
@@ -64,7 +68,7 @@ class Decoder {
   /**
    * Attempts to decode the message header from the buffer
    */
-  _decodeHeader (data: Uint8ArrayList): MessageHeader {
+  _decodeHeader(data: Uint8ArrayList): MessageHeader {
     const {
       value: h,
       offset
@@ -89,7 +93,7 @@ class Decoder {
 const MSB = 0x80
 const REST = 0x7F
 
-function readVarInt (buf: Uint8ArrayList, offset: number = 0) {
+function readVarInt(buf: Uint8ArrayList, offset: number = 0) {
   let res = 0
   let shift = 0
   let counter = offset
@@ -119,7 +123,7 @@ function readVarInt (buf: Uint8ArrayList, offset: number = 0) {
 /**
  * Decode a chunk and yield an _array_ of decoded messages
  */
-export async function * decode (source: Source<Uint8Array>) {
+export async function* decode(source: Source<Uint8Array>) {
   const decoder = new Decoder()
 
   for await (const chunk of source) {

@@ -40,7 +40,7 @@ export interface MplexInit {
 }
 
 export class Mplex implements StreamMuxerFactory, Initializable {
-  public protocol = '/mplex/6.7.0'
+  public protocol = '/mplex/snappy/0.1.0'
   private readonly _init: MplexInit
   private components: Components = new Components()
 
