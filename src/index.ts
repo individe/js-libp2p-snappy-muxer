@@ -39,7 +39,7 @@ export interface MplexInit {
   disconnectThreshold?: number
 }
 
-export class Mplex implements StreamMuxerFactory, Initializable {
+export class SnappyMplex implements StreamMuxerFactory, Initializable {
   public protocol = '/mplex/snappy/0.1.0'
   private readonly _init: MplexInit
   private components: Components = new Components()

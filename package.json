@@ -1,21 +1,26 @@
 {
-  "name": "@libp2p/mplex",
-  "version": "6.0.2",
-  "description": "JavaScript implementation of https://github.com/libp2p/mplex",
+  "name": "@individe/libp2p-snappy-muxer",
+  "version": "0.1.0",
+  "description": "@libp2p/mplex extended with snappy compression",
   "license": "Apache-2.0 OR MIT",
-  "homepage": "https://github.com/libp2p/js-libp2p-mplex#readme",
+  "homepage": "https://github.com/individe/js-libp2p-snappy-muxer#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/libp2p/js-libp2p-mplex.git"
+    "url": "git+https://github.com/individe/js-libp2p-snappy-muxer.git"
   },
   "bugs": {
-    "url": "https://github.com/libp2p/js-libp2p-mplex/issues"
+    "url": "https://github.com/individe/js-libp2p-snappy-muxer/issues"
   },
   "keywords": [
+    "compression",
+    "snappy",
+    "libp2p",
+    "js-libp2p",
+    "individe",
+    "libp2p-muxer",
     "IPFS",
     "connection",
     "duplex",
-    "libp2p",
     "mplex",
     "multiplex",
     "muxer",
@@ -164,7 +169,7 @@
     "varint": "^6.0.0"
   },
   "devDependencies": {
-    "@libp2p/interface-stream-muxer-compliance-tests": "^5.0.0",
+    "@libp2p/interfacests": "^5.0.0",
     "@types/varint": "^6.0.0",
     "aegir": "^37.2.0",
     "cborg": "^1.8.1",
