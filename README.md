@@ -1,7 +1,7 @@
 # @individe/libp2p-snappy-muxer <!-- omit in toc -->
 
 [![individe.xyz](https://img.shields.io/badge/project-individe-black.svg?style=flat-square)](https://individe.xyz/)
-[![individe.xyz](https://img.shields.io/badge/powered%20by-endlesshorizons-blueviolet?style=flat-square)](https://endlesshorizons.xyz/)
+[![endlesshorizons.xyz](https://img.shields.io/badge/powered%20by-endlesshorizons-blueviolet?style=flat-square)](https://endlesshorizons.xyz/)
 ![](https://img.shields.io/github/package-json/v/individe/js-libp2p-snappy-muxer?color=blue&style=flat-square)
 
 > libp2p's mplex muxer extended with snappy compression, made to be used with Individe IPFS nodes.
